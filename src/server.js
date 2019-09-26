@@ -35,6 +35,14 @@ app.post("/api/articles/:name/upvote", (req, res) => {
     );
 });
 
+app.post("/api/articles/:name/add-comment", (req, res) => {
+  const { username, text } = req.body;
+  const articleName = req.params.name;
+
+  articlesInfo[articleName].comments.push({ username, text });
+  res.status(200).send(articlesInfo[articleName]);
+});
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => console.log(`App is listening on port ${PORT}`));
