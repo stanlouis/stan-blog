@@ -2,11 +2,13 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { MongoClient } from "mongodb";
+import path from "path";
 
 const app = express();
 
 app.use(helmet());
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -84,6 +86,10 @@ app.post("/api/articles/:name/add-comment", (req, res) => {
     res.status(200).json(updatedArticleInfo);
   }, res);
 });
+
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname + "/public/index.html"))
+);
 
 const PORT = process.env.PORT || 8000;
 
